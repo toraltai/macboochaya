@@ -9,6 +9,16 @@ onex = Router()
 #     # print(scope.get('client'))
 #     return 200, json.dumps({"message": "Welcome to Onex page!!!"}).encode("utf-8")
 
-@onex("/onex")
+@onex("/onex_at_warehouse")
 async def home(scope, receive):
-    return get_data()
+    return at_warehouse()
+
+
+@onex("/onex_on_the_way")
+async def home(scope, receive):
+    return on_the_way()
+
+
+@onex("/onex_ready")
+async def home(scope, receive):
+    return ready()

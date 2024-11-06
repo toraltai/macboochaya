@@ -11,7 +11,7 @@ access_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2JhY2s
 https://back.onex.kg/api/v1/account/details = Баланс
 https://back.onex.kg/api/v1/orders/status-count = Общее количество полученных товаров и на складах
 https://back.onex.kg/api/v1/orders/expected" = Товары которые Ожидаются, так же можно создавать товар(**)
-https://back.onex.kg/api/v1/orders?status=at_warehouse = Товары которые на складе
+https://back.onex.kg/api/v1/orders?status=at_warehouse = Товары которые на складе в Америке
 https://back.onex.kg/api/v1/orders?status=on_the_way = Товары которые в пути
 https://back.onex.kg/api/v1/orders/ready-cost = Товары которые готовы на выдачу (Проверить)
 """
@@ -29,8 +29,34 @@ headers = {
 
 bakai = usd_bakai()
 
-def get_data():
-    response = requests.get(url=url, headers=headers)
+def at_warehouse():
+    response = requests.get('https://back.onex.kg/api/v1/orders?status=at_warehouse', headers=headers)
+    data = response.json()
+
+    info = data.get("data")["data"]
+    summary = 0
+    array = []
+    for i in info:
+        summary += i.get('cost')
+        array.append(f"{i.get('tracking_code')} - {i.get('customer_comment')} - {round(float(i.get('cost')) / bakai * 0.9, 2)} $")
+    return 200, json.dumps({"data":array}).encode("utf-8")
+
+
+def on_the_way():
+    response = requests.get('https://back.onex.kg/api/v1/orders?status=on_the_way', headers=headers)
+    data = response.json()
+
+    info = data.get("data")["data"]
+    summary = 0
+    array = []
+    for i in info:
+        summary += i.get('cost')
+        array.append(f"{i.get('tracking_code')} - {i.get('customer_comment')} - {round(float(i.get('cost')) / bakai * 0.9, 2)} $")
+    return 200, json.dumps({"data":array}).encode("utf-8")
+
+
+def ready():
+    response = requests.get('https://back.onex.kg/api/v1/orders/ready-cost', headers=headers)
     data = response.json()
 
     # response_size_kb = len(response.content) / 1024  # в КБ
@@ -41,4 +67,3 @@ def get_data():
         summary += i.get('cost')
         array.append(f"{i.get('tracking_code')} - {i.get('customer_comment')} - {round(float(i.get('cost')) / bakai * 0.9, 2)} $")
     return 200, json.dumps({"data":array}).encode("utf-8")
-
