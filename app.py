@@ -3,16 +3,17 @@ from utils.router import Router
 from utils.response import Response
 from onex.routers import onex
 from lifeshop.routers import lifeshop
+from transaction.routers import transaction
 
 api_router = Router()
 api_router.include_router(lifeshop, prefix='/api/v1')
 # api_router.include_router(shipper, prefix='/api/v1')
 api_router.include_router(onex, prefix='/api/v1')
+api_router.include_router(transaction, prefix='/api/v1')
 
 
 @api_router('/')
 async def home(scope, receive):
-    # print(scope.get('client'))
     return 200, json.dumps({"message": "Welcome!!!"}).encode("utf-8")
 
 

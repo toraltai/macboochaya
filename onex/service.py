@@ -1,5 +1,6 @@
 import requests
 import json
+from transaction.service import usd_bakai
 # from utils.response import Response
 
 
@@ -26,16 +27,18 @@ headers = {
     "Accept": "application/json"
 }
 
+bakai = usd_bakai()
+
 def get_data():
     response = requests.get(url=url, headers=headers)
     data = response.json()
-    print(data)
+
     # response_size_kb = len(response.content) / 1024  # в КБ
     info = data.get("data")["data"]
     summary = 0
     array = []
     for i in info:
         summary += i.get('cost')
-        array.append(f"{i.get('tracking_code')} - {i.get('customer_comment')} - {i.get('cost')} сом")
+        array.append(f"{i.get('tracking_code')} - {i.get('customer_comment')} - {round(float(i.get('cost')) / bakai * 0.9, 2)} $")
     return 200, json.dumps({"data":array}).encode("utf-8")
-# print(get_data())
+
