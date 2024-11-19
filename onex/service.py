@@ -4,7 +4,6 @@ from transaction.service import usd_bakai
 # from utils.response import Response
 
 
-access_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2JhY2sub25leC5rZy9hcGkvbG9naW4iLCJpYXQiOjE3MjcxNTMwMjAsImV4cCI6MTc4NzE1Mjk2MCwibmJmIjoxNzI3MTUzMDIwLCJqdGkiOiJIWmJoTVJXWXRKZG55U0dNIiwic3ViIjoiNjYyNCIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjciLCJ1bmlxdWVfaWQiOiI3NmQ4N2QyMi1kMDU2LTRjYTctOTNjYS1lOTdkYmRiYmQwOTYifQ.nWfKCZOFxJGGWJt3ah9bdaUX8d4Fgc08dJtvq572FBY"
 
 
 """
@@ -20,11 +19,17 @@ https://back.onex.kg/api/v1/orders/ready-cost = Товары которые го
 url = "https://back.onex.kg/api/v1/orders?status=at_warehouse"
 USD_SOM = 1
 
+access_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2JhY2sub25leC5rZy9hcGkvbG9naW4iLCJpYXQiOjE3MjcxNTMwMjAsImV4cCI6MTc4NzE1Mjk2MCwibmJmIjoxNzI3MTUzMDIwLCJqdGkiOiJIWmJoTVJXWXRKZG55U0dNIiwic3ViIjoiNjYyNCIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjciLCJ1bmlxdWVfaWQiOiI3NmQ4N2QyMi1kMDU2LTRjYTctOTNjYS1lOTdkYmRiYmQwOTYifQ.nWfKCZOFxJGGWJt3ah9bdaUX8d4Fgc08dJtvq572FBY"
+
 headers = {
     "Authorization": f"Bearer {access_token}",
     "Content-Type": "application/json",
     "Accept-Encoding":"gzip",
     "Accept": "application/json"
+}
+
+params = {
+    'per_page': 100,  # Количество элементов для получения
 }
 
 bakai = usd_bakai()
@@ -43,10 +48,11 @@ def at_warehouse():
 
 
 def on_the_way():
-    response = requests.get('https://back.onex.kg/api/v1/orders?status=on_the_way', headers=headers)
+    response = requests.get('https://back.onex.kg/api/v1/orders?status=on_the_way', headers=headers, params=params)
     data = response.json()
 
     info = data.get("data")["data"]
+    print(len(info))
     summary = 0
     array = []
     for i in info:
