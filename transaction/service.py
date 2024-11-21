@@ -46,6 +46,6 @@ def usd_bakai():
     return sell_price
 
 
-def transfer(a: int):
-    res = a * float(best_rub_bank()) / usd_bakai()
+def transfer(amount):
+    res = int(amount) * float(best_rub_bank()) / usd_bakai()
     return f"Вы получите: {round(res, 2)}$\nКурс рубля: {best_rub_bank()}"
