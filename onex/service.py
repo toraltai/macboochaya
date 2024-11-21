@@ -12,7 +12,7 @@ https://back.onex.kg/api/v1/orders/status-count = Общее количеств�
 https://back.onex.kg/api/v1/orders/expected" = Товары которые Ожидаются, так же можно создавать товар(**)
 https://back.onex.kg/api/v1/orders?status=at_warehouse = Товары которые на складе в Америке
 https://back.onex.kg/api/v1/orders?status=on_the_way = Товары которые в пути
-https://back.onex.kg/api/v1/orders/ready-cost = Товары которые готовы на выдачу (Проверить)
+https://back.onex.kg/api/v1/orders?status=in_local_country = Товары которые готовы на выдачу
 """
 
 
@@ -35,7 +35,7 @@ params = {
 bakai = usd_bakai()
 
 def at_warehouse():
-    response = requests.get('https://back.onex.kg/api/v1/orders?status=at_warehouse', headers=headers)
+    response = requests.get('https://back.onex.kg/api/v1/orders?status=at_warehouse', headers=headers, params=params)
     data = response.json()
 
     info = data.get("data")["data"]
@@ -52,7 +52,7 @@ def on_the_way():
     data = response.json()
 
     info = data.get("data")["data"]
-    print(len(info))
+    # print(len(info))
     summary = 0
     array = []
     for i in info:
@@ -62,7 +62,7 @@ def on_the_way():
 
 
 def ready():
-    response = requests.get('https://back.onex.kg/api/v1/orders/ready-cost', headers=headers)
+    response = requests.get('https://back.onex.kg/api/v1/orders?status=in_local_country', headers=headers, params=params)
     data = response.json()
 
     # response_size_kb = len(response.content) / 1024  # в КБ
